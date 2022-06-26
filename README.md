@@ -4,7 +4,7 @@ A simple VSCode extension that allows you to right click on a constant definitio
 ### How to use?
 Place your caret on the desired constant definition, Then using the right click context menu select the **"Ruby: copy reference"** command. The fully qualified name of the constant will be copied to your clipboard.
 
-https://user-images.githubusercontent.com/653256/175817062-6df0ee09-f2e7-4ad2-820a-78f1c2c019e4.mov
+![output](https://user-images.githubusercontent.com/653256/175824550-374569f4-6769-49ad-a2d0-75e95767371c.gif)
 
 ### How to install?
 Click [here](vscode:extension/mzruya.copy-ruby-reference).
@@ -20,7 +20,7 @@ Clone the repo:
 > git clone https://github.com/mzruya/vscode-copy-ruby-reference.git
 ```
 
-Build and package
+Build and package:
 ```bash
 > cd vscode-copy-ruby-reference/vscode-extension
 > yarn && npm install -g vsce
