@@ -20,7 +20,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 > git clone https://github.com/mzruya/vscode-copy-ruby-reference.git
 ```
 
-2. Build and package an extension for a target architecture (options are: darwin-arm64, darwin-x64, linux-x64, win32-x64) :
+2. Build and package an extension for a target architecture: (valid options are: darwin-arm64, darwin-x64, linux-x64, win32-x64)
 ```bash
 > cd vscode-copy-ruby-reference/vscode-extension
 > npm run build-and-package-darwin-arm64
