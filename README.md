@@ -7,7 +7,7 @@ Place your caret on the desired constant definition, Then using the right click 
 ![output](https://user-images.githubusercontent.com/653256/175824647-c25166d9-9dcd-4c55-9727-e3a26732a5eb.gif)
 
 ### How to install?
-Click [here](vscode:extension/mzruya.copy-ruby-reference).
+Go [here](https://marketplace.visualstudio.com/items?itemName=mzruya.copy-ruby-reference) and click **"Install"**.
 
 ### How to build?
 Set up a [rust development environment](https://rustup.rs/):
