@@ -10,17 +10,17 @@ Place your caret on the desired constant definition, Then using the right click 
 Go [here](https://marketplace.visualstudio.com/items?itemName=mzruya.copy-ruby-reference) and click **"Install"**.
 
 ### How to build?
-Set up a [rust development environment](https://rustup.rs/):
+1. Set up a [rust development environment](https://rustup.rs/):
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-Clone the repo:
+2. Clone the repo:
 ```bash
 > git clone https://github.com/mzruya/vscode-copy-ruby-reference.git
 ```
 
-Build and package an extension for a target architecture (options are: darwin-arm64, darwin-x64, linux-x64, win32-x64) :
+2. Build and package an extension for a target architecture (options are: darwin-arm64, darwin-x64, linux-x64, win32-x64) :
 ```bash
 > cd vscode-copy-ruby-reference/vscode-extension
 > npm run build-and-package-darwin-arm64
