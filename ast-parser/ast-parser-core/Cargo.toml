@@ -1,0 +1,8 @@
+[package]
+name = "ast-parser-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+lib-ruby-parser = "4.0.3"
+line-col = "0.2.1"

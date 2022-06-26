@@ -1,0 +1,11 @@
+out
+dist
+node_modules
+.vscode-test/
+*.vsix
+CACHEDIR.TAG
+.rustc_info.json
+.vscode
+target
+.DS_STORE
+index.node

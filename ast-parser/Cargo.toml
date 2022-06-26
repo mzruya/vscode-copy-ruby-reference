@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "ast-parser-bridge",
+    "ast-parser-core",
+]
