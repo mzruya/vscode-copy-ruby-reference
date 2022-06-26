@@ -4,11 +4,8 @@
   "description": "",
   "main": "ast-parser-bridge/index.node",
   "scripts": {
-    "build": "npm run build-rust-bridge",
-    "build-rust-bridge": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
-    "build-debug": "npm run build --",
-    "build-release": "npm run build -- --release",
-    "install": "npm run build-release",
+    "build": "cargo-cp-artifact -nc index.node -- cargo build --message-format=json-render-diagnostics",
+    "install":"if test \"$npm_config_target\" = \"\" ; then npm run build -- --release ; else npm run build -- --release --target=$npm_config_target; fi ",
     "test": "cargo test"
   },
   "author": "",

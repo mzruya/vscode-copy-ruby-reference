@@ -1,6 +1,11 @@
 use neon::prelude::*;
 use std::path::Path;
 
+use std::alloc::System;
+
+#[global_allocator]
+static A: System = System;
+
 fn copy_reference(mut cx: FunctionContext) -> JsResult<JsString> {
     let file_path: Handle<JsString> = cx.argument(0)?;
     let line: Handle<JsNumber> = cx.argument(1)?;

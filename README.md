@@ -20,9 +20,8 @@ Clone the repo:
 > git clone https://github.com/mzruya/vscode-copy-ruby-reference.git
 ```
 
-Build and package:
+Build and package an extension for a target architecture (options are: darwin-arm64, darwin-x64, linux-x64, win32-x64) :
 ```bash
 > cd vscode-copy-ruby-reference/vscode-extension
-> yarn && npm install -g vsce
-> vsce package
+> npm run build-and-package-darwin-arm64
 ```
