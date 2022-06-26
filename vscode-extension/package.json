@@ -59,14 +59,14 @@
     "build-darwin-x64": "npm install --target=x86_64-apple-darwin",
     "build-linux-x64": "npm install --target=x86_64-unknown-linux-gnu",
     "build-win32-x64": "npm install --target=x86_64-pc-windows-msvc",
-    "build-and-package-darwin-arm64": "npm run build-darwin-arm64 && vsce package --target darwin-arm64",
-    "build-and-package-darwin-x64": "npm run build-darwin-x64 && vsce package --target darwin-x64",
-    "build-and-package-linux-x64": "npm run build-linux-x64 && vsce package --target linux-x64",
-    "build-and-package-win32-x64": "npm run build-win32-x64 && vsce package --target win32-x64",
-    "build-and-package-and-publish-darwin-arm64": "npm run build-darwin-arm64 && vsce package --target darwin-arm64 && vsce publish --target darwin-arm64",
-    "build-and-package-and-publish-darwin-x64": "npm run build-darwin-x64 && vsce package --target darwin-x64 && vsce publish --target darwin-x64",
-    "build-and-package-and-publish-linux-x64": "npm run build-linux-x64 && vsce package --target linux-x64 && vsce publish --target linux-x64",
-    "build-and-package-and-publish-win32-x64": "npm run build-win32-x64 && vsce package --target win32-x64 && vsce publish --target win32-x64",
+    "build-and-package-darwin-arm64": "npm run build-darwin-arm64 && vsce package --yarn --target darwin-arm64",
+    "build-and-package-darwin-x64": "npm run build-darwin-x64 && vsce package --yarn --target darwin-x64",
+    "build-and-package-linux-x64": "npm run build-linux-x64 && vsce package --yarn --target linux-x64",
+    "build-and-package-win32-x64": "npm run build-win32-x64 && vsce package --yarn --target win32-x64",
+    "build-and-package-and-publish-darwin-arm64": "npm run build-and-package-darwin-arm64 && vsce publish --yarn --target darwin-arm64",
+    "build-and-package-and-publish-darwin-x64": "npm run build-and-package-darwin-x64 && vsce publish --yarn --target darwin-x64",
+    "build-and-package-and-publish-linux-x64": "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=x86_64-unknown-linux-gnu-gcc npm run build-and-package-linux-x64 && vsce publish --yarn --target linux-x64",
+    "build-and-package-and-publish-win32-x64": "npm run build-and-package-win32-x64 && vsce publish --yarn --target win32-x64",
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
@@ -86,8 +86,7 @@
     "eslint": "^8.16.0",
     "glob": "^8.0.3",
     "mocha": "^10.0.0",
-    "typescript": "^4.7.2",
-    "vsce": "^2.9.2"
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "ast-parser": "file:../ast-parser"
