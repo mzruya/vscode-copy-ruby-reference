@@ -136,7 +136,7 @@ impl visitor::Visitor for Visitor {
         let reference = Constant {
             path: self.path.clone(),
             name,
-            loc: node.name_l,
+            loc: node.expression_l,
             scope: None,
         };
 

@@ -1,5 +1,5 @@
 use constant::{Definition, Reference};
-use lib_ruby_parser::{traverse::visitor::Visitor, Parser, ParserOptions};
+use lib_ruby_parser::{traverse::visitor::Visitor, Loc, Parser, ParserOptions};
 use line_col::*;
 use std::path::{Path, PathBuf};
 
@@ -33,17 +33,26 @@ fn parse_text(text: &str, path: &Path) -> (Vec<Definition>, Vec<Reference>) {
 pub fn copy_reference(path: &Path, line: usize, character: usize) -> Option<String> {
     let text = std::fs::read_to_string(path).unwrap();
 
-    let (definitions, _) = parse_text(&text, path);
+    let (definitions, references) = parse_text(&text, path);
     let lookup = LineColLookup::new(&text);
 
-    let definition = definitions.iter().find(|definition| {
-        let (begin_line, begin_char) = lookup.get(definition.loc.begin);
-        let (_, end_char) = lookup.get(definition.loc.end);
+    let mut reference_locations: Vec<(String, Loc)> = Vec::new();
 
+    for definition in definitions {
+        reference_locations.push((definition.qualified(), definition.loc));
+    }
+
+    for reference in references {
+        reference_locations.push((reference.name, reference.loc));
+    }
+
+    let reference_location = reference_locations.iter().find(|(_, loc)| {
+        let (begin_line, begin_char) = lookup.get(loc.begin);
+        let (_, end_char) = lookup.get(loc.end);
         begin_line == line && (begin_char <= character) && (character <= end_char)
     });
 
-    definition.map(|definition| definition.qualified())
+    reference_location.map(|(reference, _)| reference.clone())
 }
 
 #[cfg(test)]
@@ -59,7 +68,7 @@ fn find_loc<'a>(lookup: &LineColLookup, definitions: &'a [Definition], name: &st
 #[test]
 #[cfg(test)]
 fn test_parse_text() {
-    let fixture = Path::new("./fixture.rb");
+    let fixture = Path::new("./text_fixtures/constant_definitions.rb");
     let text = std::fs::read_to_string(fixture).unwrap();
     let lookup = LineColLookup::new(&text);
 
@@ -77,33 +86,43 @@ fn test_parse_text() {
 #[test]
 #[cfg(test)]
 fn test_copy_reference() {
-    let fixture = Path::new("./fixture.rb");
+    let fixture = Path::new("./text_fixtures/constant_definitions.rb");
 
-    for char in 7..9 {
+    for char in 7..=9 {
         assert_eq!(copy_reference(fixture, 1, char).unwrap(), "AA");
     }
 
-    for char in 10..12 {
+    for char in 10..=12 {
         assert_eq!(copy_reference(fixture, 2, char).unwrap(), "AA::BB");
     }
 
-    for char in 11..13 {
+    for char in 11..=13 {
         assert_eq!(copy_reference(fixture, 3, char).unwrap(), "AA::BB::CC");
     }
 
-    for char in 7..11 {
+    for char in 7..=11 {
         assert_eq!(copy_reference(fixture, 4, char).unwrap(), "AA::BB::CC::CC_1");
     }
 
-    for char in 13..23 {
+    for char in 13..=23 {
         assert_eq!(copy_reference(fixture, 6, char).unwrap(), "AA::BB::CC::DD::EE::FF");
     }
 
-    for char in 16..22 {
+    for char in 16..=22 {
         assert_eq!(copy_reference(fixture, 7, char).unwrap(), "AA::BB::CC::DD::EE::FF::GG::HH");
     }
 
-    for char in 11..13 {
+    for char in 11..=13 {
         assert_eq!(copy_reference(fixture, 8, char).unwrap(), "AA::BB::CC::DD::EE::FF::GG::HH::II");
+    }
+
+    let fixture = Path::new("./text_fixtures/constant_references.rb");
+
+    for char in 1..=7 {
+        assert_eq!(copy_reference(fixture, 1, char).unwrap(), "AA::BB");
+    }
+
+    for char in 1..=11 {
+        assert_eq!(copy_reference(fixture, 2, char).unwrap(), "AA::BB::CC");
     }
 }
