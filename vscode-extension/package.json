@@ -2,7 +2,7 @@
   "name": "copy-ruby-reference",
   "displayName": "Copy Ruby Reference",
   "description": "A simple VSCode extension that parses the Ruby AST and allows you to right click on a constant definition and copy a reference to it.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "mzruya",
   "author": {
     "name": "Matan Zruya"
