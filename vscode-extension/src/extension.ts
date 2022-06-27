@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { copyReference } from "ast-parser";
+import { copyReference } from "ast-parser-bridge";
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(

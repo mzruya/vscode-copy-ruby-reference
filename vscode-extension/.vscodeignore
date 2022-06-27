@@ -5,3 +5,8 @@ src/**
 **/.eslintrc.json
 **/*.map
 **/*.ts
+node_modules/ast-parser-bridge/target
+node_modules/ast-parser-bridge/ast-parser-bridge
+node_modules/ast-parser-bridge/ast-parser-core
+../ast-parser
+
