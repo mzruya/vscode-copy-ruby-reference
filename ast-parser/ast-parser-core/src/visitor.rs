@@ -1,5 +1,3 @@
-use std::path::{Path, PathBuf};
-
 use lib_ruby_parser::{
     nodes::{self},
     traverse::visitor,
@@ -9,15 +7,13 @@ use lib_ruby_parser::{
 use super::constant::Constant;
 
 pub struct Visitor {
-    pub path: PathBuf,
     pub definitions: Vec<Constant>,
     pub references: Vec<Constant>,
 }
 
 impl Visitor {
-    pub fn new(path: &Path) -> Self {
+    pub fn new() -> Self {
         Self {
-            path: path.to_owned(),
             definitions: Vec::new(),
             references: Vec::new(),
         }
@@ -63,7 +59,7 @@ fn fetch_const_scope_name(scope: &nodes::Node) -> String {
     }
 }
 
-fn nest_constants(path: &Path, parent_name: &str, child_constants: Vec<Constant>) -> Vec<Constant> {
+fn nest_constants(parent_name: &str, child_constants: Vec<Constant>) -> Vec<Constant> {
     let mut constants = Vec::new();
 
     for child_constant in child_constants {
@@ -74,7 +70,6 @@ fn nest_constants(path: &Path, parent_name: &str, child_constants: Vec<Constant>
         };
 
         constants.push(Constant {
-            path: path.to_owned(),
             name: child_constant.name.clone(),
             loc: child_constant.loc,
             scope: Some(scope),
@@ -89,14 +84,9 @@ impl visitor::Visitor for Visitor {
         let name = fetch_const_name(&node.name);
         let loc = fetch_const_loc(&node.name);
 
-        let definition = Constant {
-            path: self.path.clone(),
-            scope: None,
-            name: name.clone(),
-            loc,
-        };
+        let definition = Constant { scope: None, name: name.clone(), loc };
 
-        let mut visitor = Visitor::new(&self.path);
+        let mut visitor = Visitor::new();
 
         if let Some(body) = node.body.as_ref() {
             visitor.visit(body);
@@ -104,37 +94,31 @@ impl visitor::Visitor for Visitor {
 
         self.definitions.push(definition);
 
-        self.definitions.append(&mut nest_constants(&self.path, &name, visitor.definitions));
-        self.references.append(&mut nest_constants(&self.path, &name, visitor.references));
+        self.definitions.append(&mut nest_constants(&name, visitor.definitions));
+        self.references.append(&mut nest_constants(&name, visitor.references));
     }
 
     fn on_module(&mut self, node: &nodes::Module) {
         let name = fetch_const_name(&node.name);
         let loc = fetch_const_loc(&node.name);
 
-        let definition = Constant {
-            path: self.path.clone(),
-            scope: None,
-            name: name.clone(),
-            loc,
-        };
+        let definition = Constant { scope: None, name: name.clone(), loc };
 
-        let mut visitor = Visitor::new(&self.path);
+        let mut visitor = Visitor::new();
 
         if let Some(body) = node.body.as_ref() {
             visitor.visit(body);
         }
 
         self.definitions.push(definition);
-        self.definitions.append(&mut nest_constants(&self.path, &name, visitor.definitions));
-        self.references.append(&mut nest_constants(&self.path, &name, visitor.references));
+        self.definitions.append(&mut nest_constants(&name, visitor.definitions));
+        self.references.append(&mut nest_constants(&name, visitor.references));
     }
 
     fn on_const(&mut self, node: &nodes::Const) {
         let name = fetch_const_const_name(node);
 
         let reference = Constant {
-            path: self.path.clone(),
             name,
             loc: node.expression_l,
             scope: None,
@@ -146,12 +130,7 @@ impl visitor::Visitor for Visitor {
     fn on_casgn(&mut self, node: &nodes::Casgn) {
         let name = fetch_casn_const_name(node);
 
-        let definition = Constant {
-            name,
-            scope: None,
-            path: self.path.clone(),
-            loc: node.name_l,
-        };
+        let definition = Constant { name, scope: None, loc: node.name_l };
 
         self.definitions.push(definition);
     }

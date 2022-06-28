@@ -1,9 +1,7 @@
 use lib_ruby_parser::Loc;
-use std::path::PathBuf;
 
 #[derive(Debug, Clone)]
 pub struct Constant {
-    pub path: PathBuf,
     pub scope: Option<String>,
     pub name: String,
     pub loc: Loc,
@@ -11,7 +9,6 @@ pub struct Constant {
 
 #[derive(Debug, Clone)]
 pub struct Reference {
-    pub path: PathBuf,
     pub scope: Option<String>,
     pub name: String,
     pub loc: Loc,
@@ -19,7 +16,6 @@ pub struct Reference {
 
 #[derive(Debug, Clone)]
 pub struct Definition {
-    pub path: PathBuf,
     pub scope: Option<String>,
     pub name: String,
     pub loc: Loc,
@@ -28,7 +24,6 @@ pub struct Definition {
 impl From<Constant> for Reference {
     fn from(constant: Constant) -> Self {
         Reference {
-            path: constant.path,
             scope: constant.scope,
             name: constant.name,
             loc: constant.loc,
@@ -39,7 +34,6 @@ impl From<Constant> for Reference {
 impl From<Constant> for Definition {
     fn from(constant: Constant) -> Self {
         Definition {
-            path: constant.path,
             scope: constant.scope,
             name: constant.name,
             loc: constant.loc,
@@ -82,14 +76,11 @@ fn qualified(scope: &Option<String>, name: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use std::{path::PathBuf, str::FromStr};
-
     use super::{Constant, Definition, Reference};
     use lib_ruby_parser::Loc;
 
     fn constant() -> Constant {
         Constant {
-            path: PathBuf::from_str("./fixtures/nested_classes.rb").unwrap(),
             scope: Some("A::B::C".to_owned()),
             name: "InC".to_owned(),
             loc: Loc { begin: 0, end: 10 },

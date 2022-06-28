@@ -9,10 +9,12 @@ export function activate(context: vscode.ExtensionContext) {
       const filePath = editor?.document.fileName;
       const selection = editor?.selection;
 
-      if (selection && filePath) {
+      const text = editor?.document?.getText()
+      
+      if (selection && text) {
         const line = selection.start.line + 1;
-        const character = selection.start.character + 1;
-        const reference = copyReference(filePath, line, character);
+        const caretPosition = selection.start.character + 1;
+        const reference = copyReference(text, line, caretPosition);
 
         if (reference !== "null") {
           vscode.env.clipboard.writeText(reference);

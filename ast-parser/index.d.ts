@@ -1,1 +1,1 @@
-export function copyReference(filePath: string, line: number, character: number): string;
+export function copyReference(text: string, line: number, caretPosition: number): string;
